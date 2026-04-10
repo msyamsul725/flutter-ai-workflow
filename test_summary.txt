@@ -1,15 +1,15 @@
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays social login options
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays sign up link
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email field updates controller text
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email validation works for valid email
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email validation rejects invalid email
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests total should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests should calculate 10% tax correctly
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests tax percentage should be 0.10
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView renders with welcome text
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays form fields and labels
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays action buttons
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email field is interactive
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password visibility toggle works
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password field accepts input
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Login button is disabled when loading
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Login button is enabled when not loading
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests UI displays all icons correctly
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView is scrollable for small screens
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email and password fields are present and editable
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Scaffold and SafeArea structure is correct
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Loading state has no indicator initially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Form is scrollable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView layout has proper structure
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests All required text fields present
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Icons in form are displayed
 
-🎉 45 tests passed.
+🎉 53 tests passed.

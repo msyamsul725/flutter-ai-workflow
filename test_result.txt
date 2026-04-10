@@ -1,4 +1,28 @@
+Resolving dependencies...
+Downloading packages...
+  flutter_lints 5.0.0 (6.0.0 available)
+  lints 5.1.1 (6.1.0 available)
+  meta 1.17.0 (1.18.2 available)
+  test_api 0.7.10 (0.7.11 available)
+  vector_math 2.2.0 (2.3.0 available)
+Got dependencies!
+5 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
 
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController Initial state should be index 0
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController TabLabels should have 3 items
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController TabRoutes should have 3 routes
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab should update selectedIndex
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab should not update with invalid index
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController getTabLabel should return correct label for valid index
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController getTabLabel should return empty string for invalid index
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController selectedIndex should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController Multiple rapid switches should use last index
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab should handle all valid indices sequentially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController selectedIndex should start at 0 after initialization
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 0 should select home tab
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 1 should select notification tab
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 2 should select profile tab
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests cartItems should be empty initially
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests isLoading should be false initially
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests subtotal should be 0.0 initially
@@ -31,18 +55,12 @@
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView renders with welcome text
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays form fields and labels
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays action buttons
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays social login options
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays sign up link
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email field updates controller text
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email validation works for valid email
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email validation rejects invalid email
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email field is interactive
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password visibility toggle works
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password field accepts input
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Login button is disabled when loading
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Login button is enabled when not loading
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests UI displays all icons correctly
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView is scrollable for small screens
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email and password fields are present and editable
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Scaffold and SafeArea structure is correct
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Loading state has no indicator initially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Form is scrollable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView layout has proper structure
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests All required text fields present
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Icons in form are displayed
 
-🎉 45 tests passed.
+🎉 53 tests passed.
