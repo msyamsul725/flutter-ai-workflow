@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'home_controller.dart';
-import '../../widgets/bottom_navigation_widget.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -150,7 +149,6 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
       ),
-      bottomNavigationBar: const BottomNavigationWidget(),
     );
   }
 

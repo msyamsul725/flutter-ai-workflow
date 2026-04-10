@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import '../pages/login/login_view.dart';
 import '../pages/login/login_binding.dart';
+import '../pages/navigation/navigation_view.dart';
+import '../pages/navigation/navigation_binding.dart';
 import '../pages/home/home_view.dart';
 import '../pages/home/home_binding.dart';
 import '../pages/notifications/notifications_view.dart';
@@ -11,13 +13,18 @@ import '../pages/cart/cart_view.dart';
 import '../pages/cart/cart_binding.dart';
 
 abstract class AppPages {
-  static const initial = Routes.login;
+  static const initial = Routes.navigation;
 
   static final routes = [
     GetPage(
       name: Routes.login,
       page: () => const LoginView(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: Routes.navigation,
+      page: () => const NavigationView(),
+      binding: NavigationBinding(),
     ),
     GetPage(
       name: Routes.home,
@@ -44,6 +51,7 @@ abstract class AppPages {
 
 abstract class Routes {
   static const login = '/login';
+  static const navigation = '/navigation';
   static const home = '/home';
   static const notification = '/notification';
   static const profile = '/profile';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'profile_controller.dart';
-import '../../widgets/bottom_navigation_widget.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
@@ -216,7 +215,6 @@ class ProfileView extends GetView<ProfileController> {
                 ),
               ),
       ),
-      bottomNavigationBar: const BottomNavigationWidget(),
     );
   }
 
