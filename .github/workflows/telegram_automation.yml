@@ -7,7 +7,6 @@ on:
         description: 'Pesan dari Telegram'
         required: true
 
-# Izin menulis file agar robot bisa push kode ke repo kamu
 permissions:
   contents: write
 
@@ -19,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -31,58 +30,57 @@ jobs:
       - name: Install New Copilot CLI (Agent Version)
         run: npm install -g @github/copilot
 
+      - name: Prepare Workspace Permissions
+        # Step ini sangat penting untuk mencegah "Permission Denied" saat AI buat folder
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+          chmod -R 777 $GITHUB_WORKSPACE
+
       - name: Execute Agentic Copilot with Context
         id: copilot_run
         env:
-          # Pastikan Secret ini berisi Fine-Grained PAT (github_pat_...)
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
           
-          # 1. MENCARI FILE INSTRUKSI (Persis seperti fitur VS Code)
-          # Kita cek di folder .github/copilot-instructions.md
+          # Membaca instruksi koding (.md)
           INSTR_FILE=".github/copilot-instructions.md"
-          
           if [ -f "$INSTR_FILE" ]; then
             RULES=$(cat "$INSTR_FILE")
-            echo "✅ Instruksi khusus ditemukan dan dimuat."
           else
-            RULES="Gunakan standar Flutter GetX terbaik."
-            echo "⚠️ Instruksi khusus tidak ditemukan, menggunakan standar umum."
+            RULES="Gunakan standar GetX (View, Controller, Binding terpisah)."
           fi
           
-          # 2. EKSEKUSI COPILOT AGENT
-          # Gabungkan aturan khusus (RULES) dengan permintaan user (USER_MSG)
-          copilot -p "Aturan Koding: $RULES. Berdasarkan aturan tersebut, kerjakan tugas ini: $USER_MSG. Tuliskan kode Flutter GetX lengkap ke file lib/pages/auto_generated_page.dart" \
-            --allow-tool='shell(git:*)' \
+          # PROMPT YANG DIPERKUAT:
+          # Kita instruksikan AI untuk WAJIB membuat folder jika belum ada.
+          copilot -p "ATURAN: $RULES. TUGAS: $USER_MSG. WAJIB: Buat folder baru di 'lib/pages/' jika diperlukan (misal: lib/pages/history/). Pisahkan menjadi file _view.dart, _controller.dart, dan _binding.dart sesuai folder tersebut. Gunakan perintah shell 'mkdir -p' jika folder belum ada." \
+            --allow-tool='shell' \
             --allow-tool=write \
             --no-ask-user
           
-          echo "Robot telah selesai memproses $USER_MSG sesuai instruksi .md" > summary.txt
+          echo "Robot telah mencoba membuat struktur folder dan file sesuai instruksi." > summary.txt
 
       - name: Commit and Push to Repository
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "actions@github.com"
+          
+          # Cek apakah ada perubahan (file baru atau folder baru)
           git add .
-          # Menggunakan [skip ci] agar tidak terjadi perulangan workflow tak terbatas
-          git commit -m "feat: auto-generate code with instructions [skip ci]" || echo "No changes to commit"
-          git push origin main
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "feat: auto-generate structured code from Telegram [skip ci]"
+            git push origin main
+          fi
 
       - name: Send Notification to Telegram
         if: always()
         run: |
-          if [ -f summary.txt ]; then
-            SUMMARY_TEXT=$(cat summary.txt)
-          else
-            SUMMARY_TEXT="Proses selesai, namun terjadi kendala pada ringkasan."
-          fi
-          
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             --data-urlencode "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
             --data-urlencode "text=🤖 *Agent Copilot Selesai!* 🤖
 
-          Status: Kode telah di-push mengikuti file instruksi.
-          Info: $SUMMARY_TEXT
+          Status: Proses pembuatan struktur folder dan file selesai.
           
-          Silakan jalankan 'git pull' di VS Code Anda."
+          Silakan jalankan 'git pull' di VS Code Anda untuk melihat folder baru."
