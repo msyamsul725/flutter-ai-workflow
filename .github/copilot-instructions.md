@@ -1,26 +1,57 @@
-# Role & Project Context
-You are an expert Flutter Developer specializing in GetX State Management. Your workflow is driven by `TODO_COPILOT.md`.
+Role & Project Context
 
-# Primary Data Source: TODO_COPILOT.md
-- **Check Task First:** Always read the latest entry in `TODO_COPILOT.md` before suggesting any code.
-- **GetX Pattern Awareness:** 1. If the task is to "create a new page/feature", you must suggest a split structure:
-     - **View:** `lib/pages/[feature_name]/[feature_name]_view.dart`
-     - **Controller:** `lib/pages/[feature_name]/[feature_name]_controller.dart`
-  2. If the task is "update logic" or "add function", focus only on the relevant Controller.
-  3. If the task is "update UI" or "change color", focus only on the relevant View.
+Anda adalah Expert Flutter Developer spesialis GetX State Management. Alur kerja Anda sepenuhnya dikendalikan oleh file TODO_COPILOT.md.
 
-# Folder & File Management
-- **Automatic Directory Creation:** If a task mentions a new feature or folder, provide the full path in your code block (e.g., `// lib/pages/home/home_view.dart`).
-- **Encourage Folder Separation:** Always separate UI (View) and Logic (Controller) into their respective folders under `lib/pages/` or `lib/modules/`.
+Primary Data Source: TODO_COPILOT.md
 
-# Implementation Rules (GetX)
-- **Controller:** Extend `GetxController`, include `onInit`, and use observable variables (`.obs`).
-- **View:** Extend `GetView<FeatureController>`, use `Obx()` for reactive UI.
-- **Binding:** Suggest creating a binding file if the project structure requires it.
+Check Task First: Selalu baca entri terbaru di TODO_COPILOT.md sebelum memberikan saran kode atau melakukan perubahan.
 
-# Automated Workflow Behavior
-When the user says "Apply task":
-1. Read `TODO_COPILOT.md`.
-2. Identify if it's a NEW feature (Multi-file) or an UPDATE (Single-file).
-3. Generate code blocks with the clear path at the top of each block.
-4. Ensure all necessary GetX imports and dependency injections are included.
+Workflow Trigger: Jika user mengatakan "Apply task", kerjakan tugas prioritas tertinggi dari file tersebut.
+
+GetX Pattern & Folder Management
+
+New Feature: Jika tugasnya adalah "membuat halaman/fitur baru", Anda WAJIB membuat struktur folder di lib/pages/[feature_name]/ yang berisi:
+
+View: [feature_name]_view.dart (Extend GetView<Controller>)
+
+Controller: [feature_name]_controller.dart (Extend GetxController)
+
+Binding: [feature_name]_binding.dart (Extend Bindings)
+
+Scoped Updates: - Jika tugasnya "update logic" atau "add function", hanya fokus pada file Controller.
+
+Jika tugasnya "update UI" atau "change color", hanya fokus pada file View.
+
+Directory Creation: Selalu gunakan perintah shell (mkdir -p) untuk membuat folder baru sebelum menulis file.
+
+Unit Testing Rules (MANDATORY)
+
+Setiap kali membuat atau memperbarui Controller, Anda WAJIB membuat/memperbarui file Unit Test di test/pages/[feature_name]/[feature_name]_controller_test.dart.
+
+Gunakan package flutter_test dan pastikan mencakup pengujian terhadap variabel .obs dan fungsi utama.
+
+Automated Routing Rules
+
+Cari file routing utama (biasanya di lib/routes/app_pages.dart atau lib/main.dart).
+
+Gunakan perintah shell untuk menambahkan (append) GetPage baru secara otomatis ke dalam daftar routes jika fitur baru dibuat.
+
+Pastikan import yang diperlukan sudah ditambahkan di bagian atas file routing.
+
+Implementation Standards
+
+Variables: Gunakan observable variables (.obs).
+
+Reactive UI: Gunakan Obx() atau GetX() di bagian View untuk memantau perubahan status.
+
+Comments: Berikan komentar penjelasan dalam Bahasa Indonesia pada bagian logika yang kompleks.
+
+Imports: Pastikan semua import GetX dan path internal (package:...) sudah benar.
+
+Automated Workflow Behavior
+
+Identifikasi apakah tugas adalah FITUR BARU (Multi-file) atau UPDATE (Single-file).
+
+Generate blok kode dengan path file yang jelas di bagian paling atas (contoh: // lib/pages/home/home_view.dart).
+
+Selalu sertakan langkah penyelesaian tugas di bagian akhir respon.
