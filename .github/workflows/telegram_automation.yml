@@ -7,9 +7,9 @@ on:
         description: 'Pesan dari Telegram'
         required: true
 
-# 1. TAMBAHKAN PERMISSIONS (Penting agar robot bisa membaca isi repo)
+# Memberikan izin kepada bot GitHub Actions untuk menulis file ke dalam repositori
 permissions:
-  contents: write  # Diubah jadi write agar bisa buat file suggestion.md
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -19,12 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5 # Update ke v5 sesuai example kamu
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Install New Copilot CLI (Agent Version)
         run: npm install -g @github/copilot
@@ -32,37 +34,46 @@ jobs:
       - name: Execute Agentic Copilot
         id: copilot_run
         env:
-          # 2. GANTI NAMA SECRET DISINI (Harus sesuai dengan nama Secret yang kamu buat tadi)
+          # Pastikan Secret ini berisi Fine-Grained PAT (github_pat_...)
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
           echo "🚀 Perintah diterima: $USER_MSG"
           
-          # 3. SESUAIKAN PERINTAH DENGAN EXAMPLE
-          # Tambahkan --allow-tool='shell(git:*)' agar dia bisa cek code kamu jika perlu
-          copilot -p "Buatkan kode Flutter GetX untuk permintaan ini: $USER_MSG. Tuliskan kode lengkapnya ke file suggestion.md" \
+          # Copilot Agent membuat file kodingan berdasarkan pesan Telegram
+          # Kita gunakan flag --allow-tool untuk akses Git dan Write file
+          copilot -p "Buatkan kode Flutter GetX lengkap untuk: $USER_MSG. Tuliskan kodenya ke file lib/pages/auto_generated_page.dart" \
             --allow-tool='shell(git:*)' \
             --allow-tool=write \
             --no-ask-user
           
-          echo "--- HASIL GENERASI ---"
-          cat suggestion.md
+          # Simpan juga penjelasan singkat ke file terpisah untuk dikirim ke Telegram
+          echo "Robot telah selesai membuat halaman $USER_MSG di lib/pages/auto_generated_page.dart" > summary.txt
 
-      - name: Send Result back to Telegram
+      - name: Commit and Push to Repository
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "feat: auto-generate code from Telegram [skip ci]" || echo "No changes to commit"
+          git push origin main
+
+      - name: Send Notification to Telegram
         if: always()
         run: |
-          if [ -f suggestion.md ]; then
-            RESULT=$(cat suggestion.md)
+          # Mengambil ringkasan dari file summary.txt
+          if [ -f summary.txt ]; then
+            SUMMARY_TEXT=$(cat summary.txt)
           else
-            RESULT="Gagal mendapatkan hasil kodingan. Cek apakah token Fine-Grained sudah benar."
+            SUMMARY_TEXT="Proses selesai, namun file summary tidak ditemukan."
           fi
           
-          # Gunakan --data-urlencode agar pesan yang mengandung simbol kodingan tidak rusak saat dikirim
+          # Kirim ke Telegram menggunakan --data-urlencode agar aman dari simbol aneh
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             --data-urlencode "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            --data-urlencode "text=🤖 *Hasil Generasi Agent Copilot* 🤖
-            
-          Perintah: $USER_MSG
+            --data-urlencode "text=🤖 *Laporan Agent Copilot* 🤖
+
+          Status: Sukses di-push ke Repo!
+          Detail: $SUMMARY_TEXT
           
-          ---
-          $RESULT"
+          Silakan jalankan 'git pull' di VS Code kamu."
