@@ -1,0 +1,37 @@
+name: Telegram automation
+on:
+  repository_dispatch:
+    types: [telegram_command]
+
+jobs:
+  run-copilot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Copilot CLI & GitHub CLI
+        run: |
+          npm install -g @githubnext/github-copilot-cli
+          # Robot masuk menggunakan secret yang kita buat tadi
+          echo "${{ secrets.GH_TOKEN }}" | gh auth login --with-token
+
+      - name: Execute Copilot Command
+        run: |
+          # Ambil pesan dari Telegram (lewat n8n)
+          USER_MSG="${{ github.event.client_payload.message }}"
+          echo "Menerima perintah: $USER_MSG"
+          
+          # Konfigurasi agar Copilot CLI bisa jalan di script (non-interactive)
+          eval "$(github-copilot-cli alias -- bash)"
+          
+          # Contoh: Minta saran kodingan berdasarkan pesan Telegram
+          # Kita simpan hasilnya ke file agar bisa di-read balik
+          github-copilot-cli suggest "$USER_MSG" > copilot_suggestion.txt
+          
+          cat copilot_suggestion.txt

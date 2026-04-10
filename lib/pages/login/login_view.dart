@@ -20,7 +20,7 @@ class LoginView extends GetView<LoginController> {
               children: [
                 // Logo/Header Section
                 SizedBox(
-                  height: 120,
+                  height: 160,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
