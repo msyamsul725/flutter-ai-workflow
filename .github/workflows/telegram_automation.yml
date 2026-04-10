@@ -7,59 +7,59 @@ on:
         description: 'Pesan dari Telegram'
         required: true
 
-# Memaksa penggunaan Node.js 24 untuk menghindari peringatan deprecation
+# Memaksa penggunaan Node.js 24 untuk performa lebih baik
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  run-copilot:
+  run-copilot-agent:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # Menggunakan versi terbaru
+          node-version: '20'
 
-      - name: Install Copilot CLI & GitHub CLI
-        run: |
-          npm install -g @githubnext/github-copilot-cli
-          # Login GitHub CLI secara non-interaktif
-          echo "${{ secrets.GH_TOKEN }}" | gh auth login --with-token
+      - name: Install New Copilot CLI (Agent Version)
+        run: npm install -g @github/copilot
 
-      - name: Execute Copilot Command
+      - name: Execute Agentic Copilot
+        id: copilot_run
+        env:
+          # Pastikan kamu menggunakan secret GH_TOKEN yang punya akses Copilot
+          COPILOT_GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
           echo "🚀 Perintah diterima: $USER_MSG"
           
-          # Autentikasi ulang khusus untuk Copilot extension
-          echo "${{ secrets.GH_TOKEN }}" | gh auth login --with-token
-          gh extension install github/gh-copilot --force
+          # Menggunakan syntax dari example kamu:
+          # Kita suruh Copilot menulis kodenya ke file temp 'suggestion.md'
+          # --allow-tool=write memungkinkan Copilot membuat file tersebut
+          copilot -p "Buatkan kode Flutter GetX untuk permintaan ini: $USER_MSG. Tuliskan kode lengkapnya ke file suggestion.md" --allow-tool=write --no-ask-user
           
-          # Menggunakan 'gh copilot explain' untuk mendapatkan logika koding
-          # Kita arahkan agar dia menjelaskan bagaimana membuat halaman tersebut
-          gh copilot explain "Kodingan Flutter GetX untuk: $USER_MSG" > copilot_suggestion.txt || echo "Gagal mendapatkan respon." > copilot_suggestion.txt
-          
-          echo "--- LOG OUTPUT ---"
-          cat copilot_suggestion.txt
+          echo "--- HASIL GENERASI ---"
+          cat suggestion.md
 
       - name: Send Result back to Telegram
-        if: always() # Tetap kirim laporan ke Telegram meski step sebelumnya gagal
+        if: always()
         run: |
-          # Membaca hasil dari file
-          if [ -f copilot_suggestion.txt ]; then
-            RESULT=$(cat copilot_suggestion.txt)
+          # Ambil hasil kodingan dari file
+          if [ -f suggestion.md ]; then
+            RESULT=$(cat suggestion.md)
           else
-            RESULT="File hasil tidak ditemukan. Terjadi kesalahan pada sistem."
+            RESULT="Gagal mendapatkan hasil kodingan."
           fi
           
-          # Kirim ke API Telegram
-          # Pastikan TELEGRAM_BOT_TOKEN dan TELEGRAM_CHAT_ID ada di GitHub Secrets
+          # Kirim ke Telegram
+          # Kita gunakan -d text agar kode terkirim sebagai pesan
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d text="🤖 *Hasil Copilot CLI* 🤖
+            -d text="🤖 *Hasil Generasi Agent Copilot* 🤖
             
           Perintah: ${{ github.event.inputs.message }}
           
