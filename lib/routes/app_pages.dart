@@ -1,0 +1,51 @@
+import 'package:get/get.dart';
+import '../pages/login/login_view.dart';
+import '../pages/login/login_binding.dart';
+import '../pages/home/home_view.dart';
+import '../pages/home/home_binding.dart';
+import '../pages/notifications/notifications_view.dart';
+import '../pages/notifications/notifications_binding.dart';
+import '../pages/profile/profile_view.dart';
+import '../pages/profile/profile_binding.dart';
+import '../pages/cart/cart_view.dart';
+import '../pages/cart/cart_binding.dart';
+
+abstract class AppPages {
+  static const initial = Routes.login;
+
+  static final routes = [
+    GetPage(
+      name: Routes.login,
+      page: () => const LoginView(),
+      binding: LoginBinding(),
+    ),
+    GetPage(
+      name: Routes.home,
+      page: () => const HomeView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: Routes.notification,
+      page: () => const NotificationsView(),
+      binding: NotificationsBinding(),
+    ),
+    GetPage(
+      name: Routes.profile,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.cart,
+      page: () => const CartView(),
+      binding: CartBinding(),
+    ),
+  ];
+}
+
+abstract class Routes {
+  static const login = '/login';
+  static const home = '/home';
+  static const notification = '/notification';
+  static const profile = '/profile';
+  static const cart = '/cart';
+}

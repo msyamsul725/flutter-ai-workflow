@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'notifications_controller.dart';
+import '../../widgets/bottom_navigation_widget.dart';
 
 class NotificationsView extends GetView<NotificationsController> {
   const NotificationsView({super.key});
@@ -73,6 +74,7 @@ class NotificationsView extends GetView<NotificationsController> {
                     },
                   ),
       ),
+      bottomNavigationBar: const BottomNavigationWidget(),
     );
   }
 

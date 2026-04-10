@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'pages/login/login_binding.dart';
-import 'pages/login/login_view.dart';
+import 'routes/app_pages.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,8 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const LoginView(),
-      initialBinding: LoginBinding(),
+      initialRoute: AppPages.initial,
+      getPages: AppPages.routes,
     );
   }
 }
