@@ -22,65 +22,71 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Flutter Environment
+        uses: subosito/flutter-action@v2
         with:
-          node-version: '20'
+          channel: 'stable'
+          cache: true
 
-      - name: Install New Copilot CLI (Agent Version)
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Install Copilot CLI
         run: npm install -g @github/copilot
 
       - name: Prepare Workspace Permissions
-        # Step ini sangat penting untuk mencegah "Permission Denied" saat AI buat folder
         run: |
           sudo chown -R $USER:$USER $GITHUB_WORKSPACE
           chmod -R 777 $GITHUB_WORKSPACE
 
-      - name: Execute Agentic Copilot with Context
+      - name: Execute Agentic Copilot
         id: copilot_run
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
           
-          # Membaca instruksi koding (.md)
-          INSTR_FILE=".github/copilot-instructions.md"
-          if [ -f "$INSTR_FILE" ]; then
-            RULES=$(cat "$INSTR_FILE")
-          else
-            RULES="Gunakan standar GetX (View, Controller, Binding terpisah)."
-          fi
-          
-          # PROMPT YANG DIPERKUAT:
-          # Kita instruksikan AI untuk WAJIB membuat folder jika belum ada.
-          copilot -p "ATURAN: $RULES. TUGAS: $USER_MSG. WAJIB: Buat folder baru di 'lib/pages/' jika diperlukan (misal: lib/pages/history/). Pisahkan menjadi file _view.dart, _controller.dart, dan _binding.dart sesuai folder tersebut. Gunakan perintah shell 'mkdir -p' jika folder belum ada." \
+          # AI diperintahkan mengikuti SOP di copilot-instructions.md
+          copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test, dan update routing otomatis." \
             --allow-tool='shell' \
             --allow-tool=write \
             --no-ask-user
-          
-          echo "Robot telah mencoba membuat struktur folder dan file sesuai instruksi." > summary.txt
 
-      - name: Commit and Push to Repository
+      - name: Run Unit Tests & Report
+        id: run_tests
+        run: |
+          echo "🧪 Memulai Unit Test..."
+          # Menjalankan test dan menyimpan outputnya
+          flutter test > test_result.txt 2>&1 || true
+          # Ambil 15 baris terakhir untuk ringkasan laporan Telegram
+          tail -n 15 test_result.txt > test_summary.txt
+
+      - name: Commit and Push
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "actions@github.com"
-          
-          # Cek apakah ada perubahan (file baru atau folder baru)
           git add .
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "feat: auto-generate structured code from Telegram [skip ci]"
+            git commit -m "feat: auto-code with tests and routes [skip ci]"
             git push origin main
           fi
 
-      - name: Send Notification to Telegram
+      - name: Send Report to Telegram
         if: always()
         run: |
+          TEST_LOG=$(cat test_summary.txt)
+          
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             --data-urlencode "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            --data-urlencode "text=🤖 *Agent Copilot Selesai!* 🤖
+            --data-urlencode "text=🤖 *LAPORAN AGENT COPILOT PRO* 🤖
 
-          Status: Proses pembuatan struktur folder dan file selesai.
+          ✅ *Status:* Kode & Route Berhasil Diperbarui!
           
-          Silakan jalankan 'git pull' di VS Code Anda untuk melihat folder baru."
+          🧪 *Hasil Unit Test:*
+          \`\`\`
+          $TEST_LOG
+          \`\`\`
+          
+          Silakan jalankan 'git pull' di VS Code Anda untuk melihat folder dan file baru."
