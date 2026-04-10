@@ -7,7 +7,10 @@ on:
         description: 'Pesan dari Telegram'
         required: true
 
-# Memaksa penggunaan Node.js 24 untuk performa lebih baik
+# 1. TAMBAHKAN PERMISSIONS (Penting agar robot bisa membaca isi repo)
+permissions:
+  contents: write  # Diubah jadi write agar bisa buat file suggestion.md
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -16,14 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5 # Update ke v5 sesuai example kamu
         with:
           fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Install New Copilot CLI (Agent Version)
         run: npm install -g @github/copilot
@@ -31,16 +32,18 @@ jobs:
       - name: Execute Agentic Copilot
         id: copilot_run
         env:
-          # Pastikan kamu menggunakan secret GH_TOKEN yang punya akses Copilot
-          COPILOT_GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          # 2. GANTI NAMA SECRET DISINI (Harus sesuai dengan nama Secret yang kamu buat tadi)
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
           echo "🚀 Perintah diterima: $USER_MSG"
           
-          # Menggunakan syntax dari example kamu:
-          # Kita suruh Copilot menulis kodenya ke file temp 'suggestion.md'
-          # --allow-tool=write memungkinkan Copilot membuat file tersebut
-          copilot -p "Buatkan kode Flutter GetX untuk permintaan ini: $USER_MSG. Tuliskan kode lengkapnya ke file suggestion.md" --allow-tool=write --no-ask-user
+          # 3. SESUAIKAN PERINTAH DENGAN EXAMPLE
+          # Tambahkan --allow-tool='shell(git:*)' agar dia bisa cek code kamu jika perlu
+          copilot -p "Buatkan kode Flutter GetX untuk permintaan ini: $USER_MSG. Tuliskan kode lengkapnya ke file suggestion.md" \
+            --allow-tool='shell(git:*)' \
+            --allow-tool=write \
+            --no-ask-user
           
           echo "--- HASIL GENERASI ---"
           cat suggestion.md
@@ -48,20 +51,18 @@ jobs:
       - name: Send Result back to Telegram
         if: always()
         run: |
-          # Ambil hasil kodingan dari file
           if [ -f suggestion.md ]; then
             RESULT=$(cat suggestion.md)
           else
-            RESULT="Gagal mendapatkan hasil kodingan."
+            RESULT="Gagal mendapatkan hasil kodingan. Cek apakah token Fine-Grained sudah benar."
           fi
           
-          # Kirim ke Telegram
-          # Kita gunakan -d text agar kode terkirim sebagai pesan
+          # Gunakan --data-urlencode agar pesan yang mengandung simbol kodingan tidak rusak saat dikirim
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d text="🤖 *Hasil Generasi Agent Copilot* 🤖
+            --data-urlencode "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            --data-urlencode "text=🤖 *Hasil Generasi Agent Copilot* 🤖
             
-          Perintah: ${{ github.event.inputs.message }}
+          Perintah: $USER_MSG
           
           ---
           $RESULT"
