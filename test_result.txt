@@ -1,0 +1,58 @@
+
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests cartItems should be empty initially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests isLoading should be false initially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests subtotal should be 0.0 initially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests tax should be 0.0 initially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests total should be 0.0 initially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Add Item Tests should add a new item to cart
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Add Item Tests should increase quantity if item already exists
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Add Item Tests should calculate totals after adding item
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Remove Item Tests should remove item from cart
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Remove Item Tests should recalculate totals after removing item
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Update Quantity Tests should update item quantity
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Update Quantity Tests should recalculate totals when updating quantity
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Update Quantity Tests should remove item if quantity is set to 0 or less
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Update Quantity Tests should not update quantity if item does not exist
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Clear Cart Tests should clear all items from cart
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Clear Cart Tests should reset totals when clearing cart
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Price Formatting Tests should format price correctly
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Price Formatting Tests should format small price correctly
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Price Formatting Tests should format large price correctly
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests CartItem Model Tests should calculate subtotal correctly
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests CartItem Model Tests should have default quantity of 1
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Multiple Items Calculation Tests should correctly calculate totals with multiple items
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests cartItems should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests isLoading should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests subtotal should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests tax should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests total should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests should calculate 10% tax correctly
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests tax percentage should be 0.10
+::group::❌ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: Counter increments smoke test (failed)
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "0": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart:19:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1682:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart line 19
+The test description was:
+  Counter increments smoke test
+════════════════════════════════════════════════════════════════════════════════════════════════════
+Test failed. See exception logs above.
+The test description was: Counter increments smoke test
+
+::endgroup::
+
+::error::29 tests passed, 1 failed.
