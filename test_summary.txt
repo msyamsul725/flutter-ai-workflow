@@ -1,15 +1,15 @@
-<asynchronous suspension>
-<asynchronous suspension>
-(elided one frame from package:stack_trace)
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays social login options
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays sign up link
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email field updates controller text
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email validation works for valid email
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email validation rejects invalid email
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password visibility toggle works
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password field accepts input
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Login button is disabled when loading
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Login button is enabled when not loading
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests UI displays all icons correctly
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView is scrollable for small screens
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email and password fields are present and editable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Scaffold and SafeArea structure is correct
 
-This was caught by the test expectation on the following line:
-  file:///home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart line 19
-The test description was:
-  Counter increments smoke test
-════════════════════════════════════════════════════════════════════════════════════════════════════
-Test failed. See exception logs above.
-The test description was: Counter increments smoke test
-
-::endgroup::
-
-::error::29 tests passed, 1 failed.
+🎉 45 tests passed.

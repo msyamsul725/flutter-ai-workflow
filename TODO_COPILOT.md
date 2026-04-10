@@ -23,4 +23,11 @@ Coba buatkan unit test untuk controller cart. Ikuti aturan ketat di .github/copi
   - Tests include: Initial state, Add/Remove items, Update quantity, Clear cart, Price formatting, CartItem model, Multiple items calculation, Observable reactivity, Tax calculations
   - All tests passing: 29 tests passed ✅
 
+### [COMPLETED] - 2026-04-10T07:47:06.426Z
+Perbaiki file test/widget_test.dart agar sesuai dengan tampilan halaman utama yang sekarang
+✓ Widget test fixed successfully with 16 passing tests:
+  - test/widget_test.dart replaced with comprehensive LoginView widget tests
+  - Tests cover: UI element rendering, form field interactions, email validation, password visibility toggle, loading states, icons, scrollability
+  - All tests passing: 16 tests passed ✅
+
 ---
