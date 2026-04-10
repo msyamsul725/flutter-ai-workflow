@@ -1,7 +1,10 @@
 name: Telegram automation
 on:
-  repository_dispatch:
-    types: [telegram_command]
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Pesan dari Telegram'
+        required: true
 
 jobs:
   run-copilot:
@@ -18,20 +21,32 @@ jobs:
       - name: Install Copilot CLI & GitHub CLI
         run: |
           npm install -g @githubnext/github-copilot-cli
-          # Robot masuk menggunakan secret yang kita buat tadi
           echo "${{ secrets.GH_TOKEN }}" | gh auth login --with-token
 
       - name: Execute Copilot Command
         run: |
-          # Ambil pesan dari Telegram (lewat n8n)
-          USER_MSG="${{ github.event.client_payload.message }}"
-          echo "Menerima perintah: $USER_MSG"
+          USER_MSG="${{ github.event.inputs.message }}"
+          echo "🚀 Perintah diterima: $USER_MSG"
           
-          # Konfigurasi agar Copilot CLI bisa jalan di script (non-interactive)
+          # Setup alias Copilot
           eval "$(github-copilot-cli alias -- bash)"
           
-          # Contoh: Minta saran kodingan berdasarkan pesan Telegram
-          # Kita simpan hasilnya ke file agar bisa di-read balik
+          # Eksekusi Copilot CLI
+          # Kita gunakan perintah 'explain' atau 'suggest' sesuai kebutuhan
           github-copilot-cli suggest "$USER_MSG" > copilot_suggestion.txt
           
+          echo "--- HASIL DARI COPILOT ---"
           cat copilot_suggestion.txt
+
+      - name: Send Result back to Telegram
+        run: |
+          # Membaca isi file hasil saran Copilot
+          RESULT=$(cat copilot_suggestion.txt)
+          
+          # Mengirim pesan ke Telegram menggunakan API Bot
+          # Pastikan TOKEN dan CHAT_ID sudah ada di GitHub Secrets
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="🤖 Hasil Copilot untuk: ${{ github.event.inputs.message }}
+            
+          $RESULT"
