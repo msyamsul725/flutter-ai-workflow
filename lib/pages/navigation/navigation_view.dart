@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'navigation_controller.dart';
 import '../home/home_view.dart';
 import '../notifications/notifications_view.dart';
+import '../history/history_view.dart';
 import '../profile/profile_view.dart';
 
 class NavigationView extends GetView<NavigationController> {
@@ -13,7 +14,7 @@ class NavigationView extends GetView<NavigationController> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         body: Obx(
           () => IndexedStack(
@@ -21,6 +22,7 @@ class NavigationView extends GetView<NavigationController> {
             children: const [
               HomeView(),
               NotificationsView(),
+              HistoryView(),
               ProfileView(),
             ],
           ),
@@ -52,6 +54,11 @@ class NavigationView extends GetView<NavigationController> {
                   icon: const Icon(Icons.notifications_outlined),
                   activeIcon: const Icon(Icons.notifications),
                   label: 'Notifikasi',
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.history_outlined),
+                  activeIcon: const Icon(Icons.history),
+                  label: 'Riwayat',
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.person_outline),

@@ -1,15 +1,15 @@
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests total should be observable
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests should calculate 10% tax correctly
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests tax percentage should be 0.10
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView renders with welcome text
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays form fields and labels
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays action buttons
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email field is interactive
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password visibility toggle works
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Loading state has no indicator initially
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Form is scrollable
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView layout has proper structure
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests All required text fields present
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Icons in form are displayed
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Refresh History Tests should clear and reload history items
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Refresh History Tests should set isLoading to true during refresh
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Delete History Item Tests should delete item by id
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Delete History Item Tests should not affect other items when deleting one
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Clear All History Tests should clear all history items
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filtered Items Sorting Tests should sort filtered items by date descending
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filtered Items Sorting Tests should maintain sorting after filter change
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Observable Reactivity Tests historyItems should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Observable Reactivity Tests isLoading should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Observable Reactivity Tests filterStatus should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Observable Reactivity Tests searchQuery should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests HistoryItem Model Tests should create HistoryItem with all properties
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests HistoryItem Model Tests should have all required properties
 
-🎉 53 tests passed.
+🎉 93 tests passed.

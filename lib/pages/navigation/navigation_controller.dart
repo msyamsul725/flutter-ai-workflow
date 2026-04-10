@@ -8,11 +8,12 @@ class NavigationController extends GetxController {
   static const Map<int, String> tabRoutes = {
     0: '/home',
     1: '/notification',
-    2: '/profile',
+    2: '/history',
+    3: '/profile',
   };
 
   // List tab labels untuk reference
-  final tabLabels = <String>['Home', 'Notifikasi', 'Profil'];
+  final tabLabels = <String>['Home', 'Notifikasi', 'Riwayat', 'Profil'];
 
   @override
   void onInit() {

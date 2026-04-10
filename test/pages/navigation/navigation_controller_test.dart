@@ -23,17 +23,19 @@ void main() {
     });
 
     test('TabLabels should have 3 items', () {
-      expect(controller.tabLabels.length, equals(3));
+      expect(controller.tabLabels.length, equals(4));
       expect(controller.tabLabels[0], equals('Home'));
       expect(controller.tabLabels[1], equals('Notifikasi'));
-      expect(controller.tabLabels[2], equals('Profil'));
+      expect(controller.tabLabels[2], equals('Riwayat'));
+      expect(controller.tabLabels[3], equals('Profil'));
     });
 
     test('TabRoutes should have 3 routes', () {
-      expect(NavigationController.tabRoutes.length, equals(3));
+      expect(NavigationController.tabRoutes.length, equals(4));
       expect(NavigationController.tabRoutes[0], equals('/home'));
       expect(NavigationController.tabRoutes[1], equals('/notification'));
-      expect(NavigationController.tabRoutes[2], equals('/profile'));
+      expect(NavigationController.tabRoutes[2], equals('/history'));
+      expect(NavigationController.tabRoutes[3], equals('/profile'));
     });
 
     test('switchTab should update selectedIndex', () {
@@ -59,7 +61,8 @@ void main() {
     test('getTabLabel should return correct label for valid index', () {
       expect(controller.getTabLabel(0), equals('Home'));
       expect(controller.getTabLabel(1), equals('Notifikasi'));
-      expect(controller.getTabLabel(2), equals('Profil'));
+      expect(controller.getTabLabel(2), equals('Riwayat'));
+      expect(controller.getTabLabel(3), equals('Profil'));
     });
 
     test('getTabLabel should return empty string for invalid index', () {
@@ -94,7 +97,7 @@ void main() {
     });
 
     test('switchTab should handle all valid indices sequentially', () {
-      for (int i = 0; i < 3; i++) {
+      for (int i = 0; i < 4; i++) {
         controller.switchTab(i);
         expect(controller.selectedIndex.value, equals(i));
       }
@@ -124,10 +127,20 @@ void main() {
       );
     });
 
-    test('switchTab 2 should select profile tab', () {
+    test('switchTab 2 should select history tab', () {
       controller.switchTab(2);
 
       expect(controller.selectedIndex.value, equals(2));
+      expect(
+        controller.getTabLabel(controller.selectedIndex.value),
+        equals('Riwayat'),
+      );
+    });
+
+    test('switchTab 3 should select profile tab', () {
+      controller.switchTab(3);
+
+      expect(controller.selectedIndex.value, equals(3));
       expect(
         controller.getTabLabel(controller.selectedIndex.value),
         equals('Profil'),
