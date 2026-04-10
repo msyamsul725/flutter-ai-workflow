@@ -35,12 +35,19 @@ jobs:
           USER_MSG="${{ github.event.inputs.message }}"
           echo "🚀 Perintah diterima: $USER_MSG"
           
-          # Inisialisasi alias
-          eval "$(github-copilot-cli alias -- bash)"
+          # 1. Cek versi & perintah yang tersedia (untuk log riset)
+          echo "--- CHECKING AVAILABLE COMMANDS ---"
+          github-copilot-cli --help || echo "Root help failed"
           
-          # Kita ganti perintahnya ke 'suggest' dengan flag shell agar memberikan output teks
-          # Jika 'suggest' juga gagal, kita gunakan cara paling dasar yaitu memanggil binari langsung
-          github-copilot-cli suggest "$USER_MSG" --target shell > copilot_suggestion.txt || echo "Copilot tidak dapat memberikan saran untuk pesan tersebut." > copilot_suggestion.txt
+          # 2. Coba gunakan syntax 'gh copilot' jika CLI lama sudah terintegrasi ke gh
+          # Jika gagal, coba perintah 'what-the-shell' (perintah populer di versi tertentu)
+          if github-copilot-cli what-the-shell "$USER_MSG" > copilot_suggestion.txt; then
+            echo "Used what-the-shell"
+          elif github-copilot-cli gp "$USER_MSG" > copilot_suggestion.txt; then
+            echo "Used gp (git-pilot)"
+          else
+            echo "Semua perintah gagal. Cek log di atas untuk melihat list perintah yang benar." > copilot_suggestion.txt
+          fi
           
           echo "--- LOG OUTPUT ---"
           cat copilot_suggestion.txt
