@@ -1,0 +1,1 @@
+Robot telah selesai membuat halaman =Buatkan halaman histori dengan getx di lib/pages/auto_generated_page.dart
