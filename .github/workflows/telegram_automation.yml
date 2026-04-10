@@ -30,24 +30,17 @@ jobs:
           echo "${{ secrets.GH_TOKEN }}" | gh auth login --with-token
 
       - name: Execute Copilot Command
-        id: copilot_step
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
           echo "🚀 Perintah diterima: $USER_MSG"
           
-          # 1. Cek versi & perintah yang tersedia (untuk log riset)
-          echo "--- CHECKING AVAILABLE COMMANDS ---"
-          github-copilot-cli --help || echo "Root help failed"
+          # Autentikasi ulang khusus untuk Copilot extension
+          echo "${{ secrets.GH_TOKEN }}" | gh auth login --with-token
+          gh extension install github/gh-copilot --force
           
-          # 2. Coba gunakan syntax 'gh copilot' jika CLI lama sudah terintegrasi ke gh
-          # Jika gagal, coba perintah 'what-the-shell' (perintah populer di versi tertentu)
-          if github-copilot-cli what-the-shell "$USER_MSG" > copilot_suggestion.txt; then
-            echo "Used what-the-shell"
-          elif github-copilot-cli gp "$USER_MSG" > copilot_suggestion.txt; then
-            echo "Used gp (git-pilot)"
-          else
-            echo "Semua perintah gagal. Cek log di atas untuk melihat list perintah yang benar." > copilot_suggestion.txt
-          fi
+          # Menggunakan 'gh copilot explain' untuk mendapatkan logika koding
+          # Kita arahkan agar dia menjelaskan bagaimana membuat halaman tersebut
+          gh copilot explain "Kodingan Flutter GetX untuk: $USER_MSG" > copilot_suggestion.txt || echo "Gagal mendapatkan respon." > copilot_suggestion.txt
           
           echo "--- LOG OUTPUT ---"
           cat copilot_suggestion.txt
