@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ai_workflow/widgets/bottom_navigation_widget.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
@@ -65,8 +66,8 @@ class LoginController extends GetxController {
           'Login berhasil',
           snackPosition: SnackPosition.BOTTOM,
         );
-        // Navigate ke home atau dashboard
-        // Get.offNamed(Routes.HOME);
+    
+        Get.offAll(BottomNavigationWidget());
       } else {
         Get.snackbar(
           'Error',
