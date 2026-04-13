@@ -22,10 +22,10 @@ Try `flutter pub outdated` for more information.
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController selectedIndex should start at 0 after initialization
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 0 should select home tab
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 1 should select notification tab
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 2 should select history tab
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 3 should select profile tab
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Initial State Tests historyItems should be empty initially before onInit
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 2 should select history tab
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Initial State Tests isLoading should be false initially
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/navigation/navigation_controller_test.dart: NavigationController switchTab 3 should select profile tab
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Initial State Tests filterStatus should be "all" initially
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Initial State Tests searchQuery should be empty initially
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Initial State Tests cartItems should be empty initially
@@ -55,16 +55,16 @@ Try `flutter pub outdated` for more information.
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests subtotal should be observable
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests tax should be observable
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Observable Reactivity Tests total should be observable
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Load History Data Tests should load history items on init
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests should calculate 10% tax correctly
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests tax percentage should be 0.10
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Load History Data Tests should load history items on init
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Load History Data Tests historyItems should contain valid data
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should update filterStatus when setFilter is called
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView renders with welcome text
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays form fields and labels
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays action buttons
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should filter items by status
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email field is interactive
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should filter items by status
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password visibility toggle works
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Loading state has no indicator initially
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Form is scrollable

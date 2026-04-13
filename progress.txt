@@ -1,0 +1,7 @@
+Membaca TODO_COPILOT.md untuk mengambil konteks sumber kebenaran sebelum menyusun laporan profesional terkait notifikasi "skip unit test". Menjalankan pembacaan file dan melaporkan niat.
+
+● Read TODO_COPILOT.md
+  └ 79 lines read
+
+Progres hari ini adalah mematangkan sistem integrasi CI/CD pada fitur notifikasi "skip unit test", yang mendeteksi flag atau tag pada commit/PR sehingga pipeline dapat melewati langkah unit test secara terkendali; setiap kali terjadi push dengan tag "skip test" atau opsi serupa, sistem akan mengirim notifikasi terstruktur ke channel tim dan menyimpan metadata audit (penyebab, author, commit ID, daftar tes yang dilewati), sambil tetap menjalankan linting dan build supaya visibilitas, akuntabilitas, dan kemampuan rollback tetap terjaga.
+
