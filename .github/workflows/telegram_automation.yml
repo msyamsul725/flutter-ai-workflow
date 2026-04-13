@@ -1,11 +1,11 @@
 name: Telegram automation
 
 on:
-workflow_dispatch:
-  inputs:
-    message:
-      description: 'Pesan dari Telegram'
-      required: true
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Pesan dari Telegram'
+        required: true
 
 permissions:
   contents: write
@@ -45,9 +45,6 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
-          
-          # AI diperintahkan mengikuti SOP di copilot-instructions.md
-          # Perintah ini akan mengeksekusi pembuatan kode berdasarkan input Telegram
           copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test, dan update routing otomatis." \
             --allow-tool='shell' \
             --allow-tool=write \
@@ -55,7 +52,6 @@ jobs:
 
       - name: Run Unit Tests & Report
         id: run_tests
-        # Logika: Jalankan test HANYA JIKA input pesan TIDAK mengandung instruksi skip
         if: |
           contains(github.event.inputs.message, 'tanpa unit test') == false && 
           contains(github.event.inputs.message, 'skip test') == false
@@ -79,14 +75,10 @@ jobs:
       - name: Send Report to Telegram
         if: always()
         run: |
-          # Ambil input pesan untuk pengecekan kondisi laporan
           USER_INPUT="${{ github.event.inputs.message }}"
-          
-          # Inisialisasi bagian laporan Unit Test
           if [[ "$USER_INPUT" == *"tanpa unit test"* ]] || [[ "$USER_INPUT" == *"skip test"* ]]; then
              TEST_SECTION="🧪 *Unit Test:* ⚠️ _Skipped by user request_"
           else
-             # Cek apakah file hasil test ada dan memiliki isi (bukan file kosong)
              if [ -s test_summary.txt ]; then
                 LOG_CONTENT=$(cat test_summary.txt)
                 TEST_SECTION="🧪 *Hasil Unit Test:*
@@ -98,7 +90,6 @@ $LOG_CONTENT
              fi
           fi
           
-          # Kirim pesan ke Telegram menggunakan Bot Token dan Chat ID dari Secrets
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             --data-urlencode "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
             --data-urlencode "parse_mode=Markdown" \
