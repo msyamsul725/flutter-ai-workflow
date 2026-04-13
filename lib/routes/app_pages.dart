@@ -15,6 +15,8 @@ import '../pages/profile/profile_view.dart';
 import '../pages/profile/profile_binding.dart';
 import '../pages/cart/cart_view.dart';
 import '../pages/cart/cart_binding.dart';
+import 'package:flutter_ai_workflow/pages/detail_notifikasi_skip_unit_test/detail_notifikasi_skip_unit_test_view.dart';
+import 'package:flutter_ai_workflow/pages/detail_notifikasi_skip_unit_test/detail_notifikasi_skip_unit_test_binding.dart';
 
 abstract class AppPages {
   static const initial = Routes.navigation;
@@ -60,6 +62,11 @@ abstract class AppPages {
       page: () => const CartView(),
       binding: CartBinding(),
     ),
+    GetPage(
+      name: Routes.detail_notifikasi_skip_unit_test,
+      page: () => const DetailNotifikasiSkipUnitTestView(),
+      binding: DetailNotifikasiSkipUnitTestBinding(),
+    ),
   ];
 }
 
@@ -72,4 +79,5 @@ abstract class Routes {
   static const history_detail = '/history/detail';
   static const profile = '/profile';
   static const cart = '/cart';
+  static const detail_notifikasi_skip_unit_test = '/notification/detail-skip-test';
 }
