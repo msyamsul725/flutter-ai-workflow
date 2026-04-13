@@ -45,19 +45,24 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
+          
+          # TASK 1: Suruh AI ngoding fitur
           copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test (kecuali diminta skip), dan update routing otomatis." \
             --allow-tool='shell' \
             --allow-tool=write \
             --no-ask-user
 
+          # TASK 2: Suruh AI menulis NARASI LAPORAN berdasarkan apa yang baru saja dia kerjakan
+          # Narasi ini disimpan ke progress.txt
+          copilot -p "Berdasarkan tugas '$USER_MSG', tuliskan 1 paragraf laporan profesional (Bahasa Indonesia). Fokus pada: 'Progres hari ini adalah mematangkan sistem integrasi CI/CD pada [jelaskan fiturnya], di mana setiap kali push kode... [lanjutkan narasi profesional]'. JANGAN gunakan format markdown, cukup teks polos." \
+            --no-ask-user > progress.txt
+
       - name: Run Unit Tests & Report
         id: run_tests
         if: |
           contains(github.event.inputs.message, 'tanpa unit test') == false && 
-          contains(github.event.inputs.message, 'skip test') == false &&
-          contains(github.event.inputs.message, 'skip unit test') == false
+          contains(github.event.inputs.message, 'skip test') == false
         run: |
-          echo "🧪 Memulai Unit Test..."
           flutter test > test_result.txt 2>&1 || true
           tail -n 15 test_result.txt > test_summary.txt
 
@@ -78,39 +83,33 @@ jobs:
         run: |
           USER_INPUT="${{ github.event.inputs.message }}"
           
-          # 1. Logika Inferensi Alasan (AI-Style Reasoning)
-          if [[ "$USER_INPUT" == *"login"* || "$USER_INPUT" == *"auth"* ]]; then
-            REASON="💡 *Alasan:* Mengimplementasikan gerbang autentikasi untuk keamanan akses user."
-          elif [[ "$USER_INPUT" == *"profile"* || "$USER_INPUT" == *"akun"* ]]; then
-            REASON="💡 *Alasan:* Memberikan akses pengaturan data personal dan preferensi akun pengguna."
-          elif [[ "$USER_INPUT" == *"list"* || "$USER_INPUT" == *"history"* ]]; then
-            REASON="💡 *Alasan:* Memfasilitasi visualisasi data terstruktur untuk mempermudah monitoring informasi."
+          # Mengambil narasi yang dibuat AI tadi
+          if [ -s progress.txt ]; then
+            DYNAMIC_CONTEXT=$(cat progress.txt | tr -d '\n' | sed 's/"/\\"/g')
           else
-            REASON="💡 *Alasan:* Melakukan ekspansi fitur aplikasi berdasarkan request task otomasi."
+            DYNAMIC_CONTEXT="Memastikan integrasi CI/CD berjalan stabil pada fitur terbaru."
           fi
 
-          # 2. Logika Teknik Pembuatan
+          # Logika Teknik & Unit Test
           if [[ "$USER_INPUT" == *"tanpa unit test"* || "$USER_INPUT" == *"skip"* ]]; then
-            TECHNIQUE="🛠️ *Teknik:* Prototyping cepat berbasis GetX Pattern tanpa validasi testing (Mode Fast)."
+            TECH_DESC="🛠️ *Teknik:* Prototyping cepat berbasis GetX (Fast Sync)."
+            TEST_SECTION=""
           else
-            TECHNIQUE="🛠️ *Teknik:* Implementasi modular GetX dengan integrasi Automated Unit Testing."
-          fi
-          
-          # 3. Logika Kondisional Unit Test (HILANG jika diminta skip)
-          TEST_SECTION=""
-          if [[ "$USER_INPUT" != *"tanpa unit test"* ]] && [[ "$USER_INPUT" != *"skip test"* ]] && [[ "$USER_INPUT" != *"skip unit test"* ]]; then
-             if [ -s test_summary.txt ]; then
-                LOG_CONTENT=$(cat test_summary.txt)
-                TEST_SECTION="%0A🧪 *Hasil Unit Test:*%0A\`\`\`%0A$LOG_CONTENT%0A\`\`\`%0A"
-             fi
+            TECH_DESC="🛠️ *Teknik:* Implementasi modular GetX dengan Automated Unit Testing."
+            if [ -s test_summary.txt ]; then
+              LOG_CONTENT=$(cat test_summary.txt | sed 's/"/\\"/g')
+              TEST_SECTION="%0A%0A🧪 *Hasil Unit Test:*%0A\`\`\`%0A$LOG_CONTENT%0A\`\`\`"
+            else
+              TEST_SECTION=""
+            fi
           fi
 
-          # 4. Satukan Pesan
           TITLE="📱 *LAPORAN ASISTEN MOBILE AI* 📱"
           STATUS="✅ *Status:* Kode %26 Route Berhasil Diperbarui!"
           FOOTER="🚀 *Next Step:* Silakan jalankan \`git pull\` di VS Code Anda."
           
-          FULL_MESSAGE="$TITLE%0A%0A$STATUS%0A%0A$REASON%0A$TECHNIQUE$TEST_SECTION%0A$FOOTER"
+          # Pesan sekarang menggunakan DYNAMIC_CONTEXT dari AI
+          FULL_MESSAGE="$TITLE%0A%0A$STATUS%0A%0A$DYNAMIC_CONTEXT%0A%0A$TECH_DESC$TEST_SECTION%0A%0A$FOOTER"
 
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
