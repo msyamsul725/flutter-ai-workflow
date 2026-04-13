@@ -45,17 +45,13 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
-          
-          # AI diperintahkan mengikuti SOP di copilot-instructions.md
           copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test, dan update routing otomatis." \
             --allow-tool='shell' \
             --allow-tool=write \
             --no-ask-user
 
-      # --- PERBAIKAN DI SINI: LOGIKA SKIP UNIT TEST ---
       - name: Run Unit Tests & Report
         id: run_tests
-        # Step ini hanya jalan JIKA pesan tidak mengandung instruksi skip
         if: |
           contains(github.event.inputs.message, 'tanpa unit test') == false && 
           contains(github.event.inputs.message, 'skip test') == false
@@ -63,13 +59,6 @@ jobs:
           echo "🧪 Memulai Unit Test..."
           flutter test > test_result.txt 2>&1 || true
           tail -n 15 test_result.txt > test_summary.txt
-
-      - name: Handle Skipped Test Report
-        if: |
-          contains(github.event.inputs.message, 'tanpa unit test') || 
-          contains(github.event.inputs.message, 'skip test')
-        run: |
-          echo "⚠️ Unit Test dilewati sesuai instruksi." > test_summary.txt
 
       - name: Commit and Push
         run: |
@@ -79,30 +68,36 @@ jobs:
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "feat: auto-code with tests and routes [skip ci]"
+            git commit -m "feat: auto-code by Asisten Mobile AI [skip ci]"
             git push origin main
           fi
 
       - name: Send Report to Telegram
         if: always()
         run: |
-          # Cek jika file log ada, kalau tidak ada (karena skip) gunakan fallback message
-          if [ -f test_summary.txt ]; then
-            TEST_LOG=$(cat test_summary.txt)
-          else
-            TEST_LOG="Unit Test tidak dijalankan (Skipped)."
-          fi
+          USER_INPUT="${{ github.event.inputs.message }}"
           
+          # Gunakan variabel untuk menampung teks agar aman dari error sintaks YAML
+          if [[ "$USER_INPUT" == *"tanpa unit test"* ]] || [[ "$USER_INPUT" == *"skip test"* ]]; then
+             TEST_SECTION="🧪 *Unit Test:* ⚠️ _Skipped by user request_"
+          else
+             if [ -s test_summary.txt ]; then
+                LOG_CONTENT=$(cat test_summary.txt)
+                # Format string dengan newline manual untuk shell
+                TEST_SECTION="🧪 *Hasil Unit Test:*%0A\`\`\`%0A$LOG_CONTENT%0A\`\`\`"
+             else
+                TEST_SECTION="🧪 *Unit Test:* ❌ _No test results found_"
+             fi
+          fi
+
+          # Satukan pesan dalam satu variabel tunggal
+          TITLE="📱 *LAPORAN ASISTEN MOBILE AI* 📱"
+          STATUS="✅ *Status:* Kode %26 Route Berhasil Diperbarui!"
+          FOOTER="🚀 *Next Step:* Silakan jalankan \`git pull\` di VS Code Anda."
+          
+          FULL_MESSAGE="$TITLE%0A%0A$STATUS%0A%0A$TEST_SECTION%0A%0A$FOOTER"
+
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            --data-urlencode "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            --data-urlencode "parse_mode=Markdown" \
-            --data-urlencode "text=🤖 *LAPORAN AGENT COPILOT PRO* 🤖
-
-✅ *Status:* Kode & Route Berhasil Diperbarui!
-
-🧪 *Hasil Unit Test:*
-\`\`\`
-$TEST_LOG
-\`\`\`
-
-Silakan jalankan 'git pull' di VS Code Anda."
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "parse_mode=Markdown" \
+            -d "text=$FULL_MESSAGE"
