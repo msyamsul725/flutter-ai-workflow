@@ -59,18 +59,18 @@ Try `flutter pub outdated` for more information.
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/cart/cart_controller_test.dart: CartController Tests Tax Calculation Tests tax percentage should be 0.10
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Load History Data Tests should load history items on init
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Load History Data Tests historyItems should contain valid data
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should update filterStatus when setFilter is called
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView renders with welcome text
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays form fields and labels
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should update filterStatus when setFilter is called
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView displays action buttons
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Email field is interactive
+✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should filter items by status
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Password visibility toggle works
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Loading state has no indicator initially
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Form is scrollable
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests LoginView layout has proper structure
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests All required text fields present
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/widget_test.dart: LoginView Widget Tests Icons in form are displayed
-✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should filter items by status
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should show all items when filter is "all"
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should filter by pending status
 ✅ /home/runner/work/flutter-ai-workflow/flutter-ai-workflow/test/pages/history/history_controller_test.dart: HistoryController Tests Filter Status Tests should filter by in_progress status
