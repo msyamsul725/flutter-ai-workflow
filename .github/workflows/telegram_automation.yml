@@ -54,7 +54,8 @@ jobs:
         id: run_tests
         if: |
           contains(github.event.inputs.message, 'tanpa unit test') == false && 
-          contains(github.event.inputs.message, 'skip test') == false
+          contains(github.event.inputs.message, 'skip test') == false &&
+          contains(github.event.inputs.message, 'skip unit test') == false
         run: |
           echo "🧪 Memulai Unit Test..."
           flutter test > test_result.txt 2>&1 || true
@@ -77,20 +78,34 @@ jobs:
         run: |
           USER_INPUT="${{ github.event.inputs.message }}"
           
-          # 1. Alasan & Teknik (Dua Rumus)
-          REASON="💡 *Alasan:* Memenuhi permintaan automasi fitur melalui trigger Telegram secara real-time."
-          TECHNIQUE="🛠️ *Teknik:* Menggunakan Agentic Copilot CLI dengan pola GetX dan manajemen routing otomatis."
+          # 1. Logika Inferensi Alasan (AI-Style Reasoning)
+          if [[ "$USER_INPUT" == *"login"* || "$USER_INPUT" == *"auth"* ]]; then
+            REASON="💡 *Alasan:* Mengimplementasikan gerbang autentikasi untuk keamanan akses user."
+          elif [[ "$USER_INPUT" == *"profile"* || "$USER_INPUT" == *"akun"* ]]; then
+            REASON="💡 *Alasan:* Memberikan akses pengaturan data personal dan preferensi akun pengguna."
+          elif [[ "$USER_INPUT" == *"list"* || "$USER_INPUT" == *"history"* ]]; then
+            REASON="💡 *Alasan:* Memfasilitasi visualisasi data terstruktur untuk mempermudah monitoring informasi."
+          else
+            REASON="💡 *Alasan:* Melakukan ekspansi fitur aplikasi berdasarkan request task otomasi."
+          fi
+
+          # 2. Logika Teknik Pembuatan
+          if [[ "$USER_INPUT" == *"tanpa unit test"* || "$USER_INPUT" == *"skip"* ]]; then
+            TECHNIQUE="🛠️ *Teknik:* Prototyping cepat berbasis GetX Pattern tanpa validasi testing (Mode Fast)."
+          else
+            TECHNIQUE="🛠️ *Teknik:* Implementasi modular GetX dengan integrasi Automated Unit Testing."
+          fi
           
-          # 2. Logika Kondisional Unit Test (Jika skip, maka TEST_SECTION kosong)
+          # 3. Logika Kondisional Unit Test (HILANG jika diminta skip)
           TEST_SECTION=""
-          if [[ "$USER_INPUT" != *"tanpa unit test"* ]] && [[ "$USER_INPUT" != *"skip test"* ]]; then
+          if [[ "$USER_INPUT" != *"tanpa unit test"* ]] && [[ "$USER_INPUT" != *"skip test"* ]] && [[ "$USER_INPUT" != *"skip unit test"* ]]; then
              if [ -s test_summary.txt ]; then
                 LOG_CONTENT=$(cat test_summary.txt)
                 TEST_SECTION="%0A🧪 *Hasil Unit Test:*%0A\`\`\`%0A$LOG_CONTENT%0A\`\`\`%0A"
              fi
           fi
 
-          # 3. Satukan Pesan
+          # 4. Satukan Pesan
           TITLE="📱 *LAPORAN ASISTEN MOBILE AI* 📱"
           STATUS="✅ *Status:* Kode %26 Route Berhasil Diperbarui!"
           FOOTER="🚀 *Next Step:* Silakan jalankan \`git pull\` di VS Code Anda."
