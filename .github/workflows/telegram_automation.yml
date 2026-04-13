@@ -47,6 +47,7 @@ jobs:
           USER_MSG="${{ github.event.inputs.message }}"
           
           # AI diperintahkan mengikuti SOP di copilot-instructions.md
+          # Perintah ini akan mengeksekusi pembuatan kode berdasarkan input Telegram
           copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test, dan update routing otomatis." \
             --allow-tool='shell' \
             --allow-tool=write \
@@ -54,11 +55,13 @@ jobs:
 
       - name: Run Unit Tests & Report
         id: run_tests
+        # Logika: Jalankan test HANYA JIKA input pesan TIDAK mengandung instruksi skip
+        if: |
+          contains(github.event.inputs.message, 'tanpa unit test') == false && 
+          contains(github.event.inputs.message, 'skip test') == false
         run: |
           echo "🧪 Memulai Unit Test..."
-          # Menjalankan test dan menyimpan outputnya
           flutter test > test_result.txt 2>&1 || true
-          # Ambil 15 baris terakhir untuk ringkasan laporan Telegram
           tail -n 15 test_result.txt > test_summary.txt
 
       - name: Commit and Push
@@ -69,24 +72,40 @@ jobs:
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "feat: auto-code with tests and routes [skip ci]"
+            git commit -m "feat: auto-code by Asisten Mobile AI [skip ci]"
             git push origin main
           fi
 
       - name: Send Report to Telegram
         if: always()
         run: |
-          TEST_LOG=$(cat test_summary.txt)
+          # Ambil input pesan untuk pengecekan kondisi laporan
+          USER_INPUT="${{ github.event.inputs.message }}"
           
+          # Inisialisasi bagian laporan Unit Test
+          if [[ "$USER_INPUT" == *"tanpa unit test"* ]] || [[ "$USER_INPUT" == *"skip test"* ]]; then
+             TEST_SECTION="🧪 *Unit Test:* ⚠️ _Skipped by user request_"
+          else
+             # Cek apakah file hasil test ada dan memiliki isi (bukan file kosong)
+             if [ -s test_summary.txt ]; then
+                LOG_CONTENT=$(cat test_summary.txt)
+                TEST_SECTION="🧪 *Hasil Unit Test:*
+\`\`\`
+$LOG_CONTENT
+\`\`\`"
+             else
+                TEST_SECTION="🧪 *Unit Test:* ❌ _No test results found (check workflow logs)_"
+             fi
+          fi
+          
+          # Kirim pesan ke Telegram menggunakan Bot Token dan Chat ID dari Secrets
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             --data-urlencode "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            --data-urlencode "text=🤖 *LAPORAN AGENT COPILOT PRO* 🤖
+            --data-urlencode "parse_mode=Markdown" \
+            --data-urlencode "text=📱 *LAPORAN ASISTEN MOBILE AI* 📱
 
-          ✅ *Status:* Kode & Route Berhasil Diperbarui!
-          
-          🧪 *Hasil Unit Test:*
-          \`\`\`
-          $TEST_LOG
-          \`\`\`
-          
-          Silakan jalankan 'git pull' di VS Code Anda untuk melihat folder dan file baru."
+✅ *Status:* Kode & Route Berhasil Diperbarui!
+
+$TEST_SECTION
+
+🚀 *Next Step:* Silakan jalankan \`git pull\` di VS Code Anda untuk sinkronisasi."
