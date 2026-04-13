@@ -45,7 +45,7 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_AGENT_TOKEN }}
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
-          copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test, dan update routing otomatis." \
+          copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test (kecuali diminta skip), dan update routing otomatis." \
             --allow-tool='shell' \
             --allow-tool=write \
             --no-ask-user
@@ -77,25 +77,25 @@ jobs:
         run: |
           USER_INPUT="${{ github.event.inputs.message }}"
           
-          # Gunakan variabel untuk menampung teks agar aman dari error sintaks YAML
-          if [[ "$USER_INPUT" == *"tanpa unit test"* ]] || [[ "$USER_INPUT" == *"skip test"* ]]; then
-             TEST_SECTION="🧪 *Unit Test:* ⚠️ _Skipped by user request_"
-          else
+          # 1. Alasan & Teknik (Dua Rumus)
+          REASON="💡 *Alasan:* Memenuhi permintaan automasi fitur melalui trigger Telegram secara real-time."
+          TECHNIQUE="🛠️ *Teknik:* Menggunakan Agentic Copilot CLI dengan pola GetX dan manajemen routing otomatis."
+          
+          # 2. Logika Kondisional Unit Test (Jika skip, maka TEST_SECTION kosong)
+          TEST_SECTION=""
+          if [[ "$USER_INPUT" != *"tanpa unit test"* ]] && [[ "$USER_INPUT" != *"skip test"* ]]; then
              if [ -s test_summary.txt ]; then
                 LOG_CONTENT=$(cat test_summary.txt)
-                # Format string dengan newline manual untuk shell
-                TEST_SECTION="🧪 *Hasil Unit Test:*%0A\`\`\`%0A$LOG_CONTENT%0A\`\`\`"
-             else
-                TEST_SECTION="🧪 *Unit Test:* ❌ _No test results found_"
+                TEST_SECTION="%0A🧪 *Hasil Unit Test:*%0A\`\`\`%0A$LOG_CONTENT%0A\`\`\`%0A"
              fi
           fi
 
-          # Satukan pesan dalam satu variabel tunggal
+          # 3. Satukan Pesan
           TITLE="📱 *LAPORAN ASISTEN MOBILE AI* 📱"
           STATUS="✅ *Status:* Kode %26 Route Berhasil Diperbarui!"
           FOOTER="🚀 *Next Step:* Silakan jalankan \`git pull\` di VS Code Anda."
           
-          FULL_MESSAGE="$TITLE%0A%0A$STATUS%0A%0A$TEST_SECTION%0A%0A$FOOTER"
+          FULL_MESSAGE="$TITLE%0A%0A$STATUS%0A%0A$REASON%0A$TECHNIQUE$TEST_SECTION%0A$FOOTER"
 
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
