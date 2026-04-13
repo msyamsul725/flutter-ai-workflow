@@ -9,6 +9,8 @@ import '../pages/notifications/notifications_view.dart';
 import '../pages/notifications/notifications_binding.dart';
 import '../pages/history/history_view.dart';
 import '../pages/history/history_binding.dart';
+import '../pages/history/history_detail_view.dart';
+import '../pages/history/history_detail_binding.dart';
 import '../pages/profile/profile_view.dart';
 import '../pages/profile/profile_binding.dart';
 import '../pages/cart/cart_view.dart';
@@ -44,6 +46,11 @@ abstract class AppPages {
       binding: HistoryBinding(),
     ),
     GetPage(
+      name: Routes.history_detail,
+      page: () => const HistoryDetailView(),
+      binding: HistoryDetailBinding(),
+    ),
+    GetPage(
       name: Routes.profile,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
@@ -62,6 +69,7 @@ abstract class Routes {
   static const home = '/home';
   static const notification = '/notification';
   static const history = '/history';
+  static const history_detail = '/history/detail';
   static const profile = '/profile';
   static const cart = '/cart';
 }

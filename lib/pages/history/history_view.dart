@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_ai_workflow/routes/app_pages.dart';
 import 'history_controller.dart';
 
 class HistoryView extends GetView<HistoryController> {
@@ -96,7 +97,10 @@ class HistoryView extends GetView<HistoryController> {
                             itemCount: controller.filteredItems.length,
                             itemBuilder: (context, index) {
                               final item = controller.filteredItems[index];
-                              return _buildHistoryCard(item, colorScheme, context);
+                              return InkWell(
+                                onTap: () => Get.toNamed(Routes.history_detail, arguments: item),
+                                child: _buildHistoryCard(item, colorScheme, context),
+                              );
                             },
                           ),
               ),
