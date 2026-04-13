@@ -1,11 +1,11 @@
 name: Telegram automation
 
 on:
-  workflow_dispatch:
-    inputs:
-      message:
-        description: 'Pesan dari Telegram'
-        required: true
+workflow_dispatch:
+  inputs:
+    message:
+      description: 'Pesan dari Telegram'
+      required: true
 
 permissions:
   contents: write
