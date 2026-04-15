@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ai_workflow/widgets/bottom_navigation_widget.dart';
+import 'package:flutter_ai_workflow/routes/app_pages.dart';
+
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
@@ -67,7 +68,7 @@ class LoginController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
         );
     
-        Get.offAll(BottomNavigationWidget());
+        Get.offAllNamed(Routes.navigation);
       } else {
         Get.snackbar(
           'Error',

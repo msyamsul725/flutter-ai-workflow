@@ -46,19 +46,24 @@ jobs:
         run: |
           USER_MSG="${{ github.event.inputs.message }}"
           
-          # AI diperintahkan mengikuti SOP di copilot-instructions.md
-          copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test, dan update routing otomatis." \
+          # TASK 1: Suruh AI ngoding fitur
+          copilot -p "TUGAS: $USER_MSG. Ikuti aturan ketat di .github/copilot-instructions.md. Buat folder, kode GetX, Unit Test (kecuali diminta skip), dan update routing otomatis." \
             --allow-tool='shell' \
             --allow-tool=write \
             --no-ask-user
 
+          # TASK 2: Suruh AI menulis NARASI LAPORAN berdasarkan apa yang baru saja dia kerjakan
+          # Narasi ini disimpan ke progress.txt
+          copilot -p "Berdasarkan tugas '$USER_MSG', tuliskan 1 paragraf laporan profesional (Bahasa Indonesia). Fokus pada: 'Progres hari ini adalah mematangkan sistem integrasi CI/CD pada [jelaskan fiturnya], di mana setiap kali push kode... [lanjutkan narasi profesional]'. JANGAN gunakan format markdown, cukup teks polos." \
+            --no-ask-user > progress.txt
+
       - name: Run Unit Tests & Report
         id: run_tests
+        if: |
+          contains(github.event.inputs.message, 'tanpa unit test') == false && 
+          contains(github.event.inputs.message, 'skip test') == false
         run: |
-          echo "🧪 Memulai Unit Test..."
-          # Menjalankan test dan menyimpan outputnya
           flutter test > test_result.txt 2>&1 || true
-          # Ambil 15 baris terakhir untuk ringkasan laporan Telegram
           tail -n 15 test_result.txt > test_summary.txt
 
       - name: Commit and Push
@@ -69,24 +74,44 @@ jobs:
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "feat: auto-code with tests and routes [skip ci]"
+            git commit -m "feat: auto-code by Asisten Mobile AI [skip ci]"
             git push origin main
           fi
 
       - name: Send Report to Telegram
         if: always()
         run: |
-          TEST_LOG=$(cat test_summary.txt)
+          USER_INPUT="${{ github.event.inputs.message }}"
           
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            --data-urlencode "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            --data-urlencode "text=🤖 *LAPORAN AGENT COPILOT PRO* 🤖
+          # Mengambil narasi yang dibuat AI tadi
+          if [ -s progress.txt ]; then
+            DYNAMIC_CONTEXT=$(cat progress.txt | tr -d '\n' | sed 's/"/\\"/g')
+          else
+            DYNAMIC_CONTEXT="Memastikan integrasi CI/CD berjalan stabil pada fitur terbaru."
+          fi
 
-          ✅ *Status:* Kode & Route Berhasil Diperbarui!
+          # Logika Teknik & Unit Test
+          if [[ "$USER_INPUT" == *"tanpa unit test"* || "$USER_INPUT" == *"skip"* ]]; then
+            TECH_DESC="🛠️ *Teknik:* Prototyping cepat berbasis GetX (Fast Sync)."
+            TEST_SECTION=""
+          else
+            TECH_DESC="🛠️ *Teknik:* Implementasi modular GetX dengan Automated Unit Testing."
+            if [ -s test_summary.txt ]; then
+              LOG_CONTENT=$(cat test_summary.txt | sed 's/"/\\"/g')
+              TEST_SECTION="%0A%0A🧪 *Hasil Unit Test:*%0A\`\`\`%0A$LOG_CONTENT%0A\`\`\`"
+            else
+              TEST_SECTION=""
+            fi
+          fi
+
+          TITLE="📱 *LAPORAN ASISTEN MOBILE AI* 📱"
+          STATUS="✅ *Status:* Kode %26 Route Berhasil Diperbarui!"
+          FOOTER="🚀 *Next Step:* Silakan jalankan \`git pull\` di VS Code Anda."
           
-          🧪 *Hasil Unit Test:*
-          \`\`\`
-          $TEST_LOG
-          \`\`\`
-          
-          Silakan jalankan 'git pull' di VS Code Anda untuk melihat folder dan file baru."
+          # Pesan sekarang menggunakan DYNAMIC_CONTEXT dari AI
+          FULL_MESSAGE="$TITLE%0A%0A$STATUS%0A%0A$DYNAMIC_CONTEXT%0A%0A$TECH_DESC$TEST_SECTION%0A%0A$FOOTER"
+
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "parse_mode=Markdown" \
+            -d "text=$FULL_MESSAGE"
